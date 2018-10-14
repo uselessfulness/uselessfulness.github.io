@@ -1,0 +1,45 @@
+body {
+    background-image: url("/assets/bierstadt_lake_scene.jpg");
+    background-color: black;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: linux-libertine;
+    margin: 0;
+    padding: 0;
+}
+
+#wrapper {
+    height: 100%;
+    position: relative;
+}
+
+#glue {
+    text-align: center;
+    overflow: hidden;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%)
+}
+
+.sec {
+    background-color: #fff3e6;
+    margin: 20px;
+    padding: 10px;
+    padding-left:20px;
+    padding-right:20px;
+    max-width: 400px;
+}
+
+a {
+    color: #595959
+}
+
+ol {
+    list-style-type: disc;
+}
+
+ul {
+    list-style-type: decimal;
+}
