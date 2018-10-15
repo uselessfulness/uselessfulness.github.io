@@ -62,6 +62,7 @@ a {
     align-items: center;
     justify-content: center;
     flex-flow: wrap;
+    resize: both;
 }
 
 #github {
