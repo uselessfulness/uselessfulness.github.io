@@ -1,0 +1,20 @@
+body {
+    background-color: var(--pink1);
+}
+
+header {
+    max-width: 300px;
+    margin: auto;
+    margin-top: 25vh;
+    margin-bottom: 20vh;
+}
+
+
+nav ul li {
+    color: var(--black2);
+    background-color: white;
+    border-radius: 1.5vw;
+    padding: 2vw;
+    margin-left: 2vw;
+    margin-right: 2vw;
+}

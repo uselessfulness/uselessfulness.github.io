@@ -1,0 +1,51 @@
+body {
+    color: white;
+    font-family: "Inconsolata", monospace;
+    margin: 0px;
+    background-color: var(--black1);
+}
+
+h1, h2, h3 {
+    font-family: "Franklin Gothic", sans-serif;
+}
+
+.flex-wrapper {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+h1 {
+    text-align: center;
+}
+
+nav {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1ex;
+}
+
+nav ul {
+    margin: 0px;
+    padding: 0px;
+}
+
+/* TODO consistent size */
+nav ul li {
+    display: inline-block;
+    background-color: var(--black2);
+    font-weight: bold;
+    text-align: center;
+    width: 4rem;
+    padding-left: 0.5vw;
+    padding-right: 0.5vw;
+    padding-top: 0.4vw;
+    padding-bottom: 0.4vw;
+}
