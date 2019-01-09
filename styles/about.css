@@ -1,42 +1,42 @@
 .timeline {
-  position: relative;
-  min-width: 380px;
-  margin: 0;
+    position: relative;
+    min-width: 380px;
+    margin: 0;
 }
 
 .timeline::after {
-  content: '';
-  position: absolute;
-  width: 2px;
-  background-color: grey;
-  top: 0;
-  bottom: 0;
-  left: 10%;
+    content: '';
+    position: absolute;
+    width: 2px;
+    background-color: grey;
+    top: 0;
+    bottom: 0;
+    left: 10%;
 }
 
 .container {
-  padding: 10px 40px;
-  position: relative;
-  width: 50%;
-  left: 10%;
+    padding: 10px 40px;
+    position: relative;
+    width: 50%;
+    left: 10%;
 }
 
 .container::after {
-  content: '';
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  background-color: grey;
-  border: 2px solid white;
-  top: 15px;
-  border-radius: 50%;
-  left: -16px;
-  z-index: 1;
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: grey;
+    border: 2px solid white;
+    top: 15px;
+    border-radius: 50%;
+    left: -16px;
+    z-index: 1;
 }
 
 .content {
-  padding: 1px 10px;
-  background-color: grey;
-  color: white;
-  position: relative;
+    padding: 1px 10px;
+    background-color: grey;
+    color: white;
+    position: relative;
 }
