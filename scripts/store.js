@@ -213,6 +213,7 @@ function checkout() {
                             $(this).parent().fadeOut(200, function () {
                                 this.remove();
                             });
+                            update_checkout_sum();
                         })
                 )
         )
