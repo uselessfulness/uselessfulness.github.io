@@ -16,7 +16,7 @@
 
 /* The nav buttons for the store */
 .store-nav ul li {
-    width: 8ex;
+    width: 4rem;
     margin-left: 2vw;
     margin-right: 2vw;
     border-style: solid;
@@ -112,6 +112,7 @@
 /* Resize store nav to fit to smaller screens */
 @media only screen and (max-width: 480px) {
     .store-nav ul li {
+        font-size: 10pt;
         margin-left: 1px;
         margin-right: 1px;
     }
