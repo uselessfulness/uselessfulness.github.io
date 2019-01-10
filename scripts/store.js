@@ -1,16 +1,16 @@
 // Just a string for now, since we're static and can't really 'load' the json from anywhere
 // TODO make user section
 var store_items_json = '{"items": [' +
-    '{"name": "The Physical World CD", "price": 10.99, "image": "../assets/Death-From-Above-1979-The-Physical-World.jpg", "description": "Death From Above\'s Second studio album, now available on CD", "customisable": true, "stock": 50, "type": "music", "new": true},' +
-    '{"name": "The Physical World Vinyl", "price": 39.99, "image": "../assets/Death-From-Above-1979-The-Physical-World.jpg", "description": "Description of second item", "customisable": true, "stock": 50, "type": "music", "new": true},' +
-    '{"name": "Heads Up CD", "price": 4.99, "image": "../assets/dfa-heads-up.jpg", "description": "Description of third item", "customisable": true, "stock": 50, "type": "merch", "new": false},' +
-    '{"name": "Romance Bloody Romance CD", "price": 9.99, "image": "../assets/dfa-im-not-sure.jpg", "description": "Description of fourth item", "customisable": true, "stock": 50, "type": "merch", "new": true},' +
-    '{"name": "You\'re A Woman I\'m A Machine CD", "price": 9.99, "image": "../assets/yourewomanimmachinecd.jpg", "description": "Description of fifth item", "customisable": true, "stock": 50, "type": "music", "new": false},' +
-    '{"name": "You\'re A Woman I\'m A Machine Vinyl", "price": 44.99, "image": "../assets/yourewomanimmachinecd.jpg", "description": "Description of sixth item", "customisable": true, "stock": 50, "type": "music", "new": false},' +
-    '{"name": "Outrage! Is Now Long Sleeve T-Shirt", "price": 21.99, "image": "../assets/dfa_outragelongsleevet-shirt.png", "description": "Description of seventh item", "customisable": true, "stock": 50, "type": "music", "new": false},' +
-    '{"name": "Outrage! Is Now T-Shirt", "price": 17.99, "image": "../assets/dfa_outraget-shirt.png", "description": "Description of eigth item", "customisable": true, "stock": 50, "type": "music", "new": true},' +
-    '{"name": "Big Heads Black T-Shirt", "price": 17.99, "image": "../assets/big_heads_black_tshirt_.jpg", "description": "Description of ninth item", "customisable": true, "stock": 50, "type": "merch", "new": true},' +
-    '{"name": "Outrage! Is Now Hoodie", "price": 34.99, "image": "../assets/dfa_outragehoodie.png", "description": "Description of tenth item", "customisable": true, "stock": 50, "type": "merch", "new": false}' +
+    '{"name": "The Physical World CD", "price": 10.99, "image": "../assets/Death-From-Above-1979-The-Physical-World.jpg", "description": "Death From Above\'s Second studio album, now available on CD.", "stock": 30, "type": "music", "new": false},' +
+    '{"name": "The Physical World Vinyl", "price": 39.99, "image": "../assets/Death-From-Above-1979-The-Physical-World.jpg", "description": "Death From Above\'s Second studio album, now available on vinyl.", "stock": 10, "type": "music", "new": false},' +
+    '{"name": "Heads Up CD", "price": 4.99, "image": "../assets/dfa-heads-up.jpg", "description": "Death From Above\'s first release, now available on CD.", "stock": 50, "type": "music", "new": false},' +
+    '{"name": "Romance Bloody Romance CD", "price": 9.99, "image": "../assets/dfa-im-not-sure.jpg", "description": "A collection of remixes and takes from Death From Above and friends.", "stock": 50, "type": "music", "new": false},' +
+    '{"name": "You\'re A Woman I\'m A Machine CD", "price": 9.99, "image": "../assets/yourewomanimmachinecd.jpg", "description": "Death From Above\'s First studio album, now available on CD.", "stock": 50, "type": "music", "new": false},' +
+    '{"name": "You\'re A Woman I\'m A Machine Vinyl", "price": 44.99, "image": "../assets/yourewomanimmachinecd.jpg", "description": "Death From Above\'s First studio album, now available on vinyl.", "stock": 50, "type": "music", "new": true},' +
+    '{"name": "Outrage! Is Now Long Sleeve T-Shirt", "price": 21.99, "image": "../assets/dfa_outragelongsleevet-shirt.png", "description": "Long sleeved", "stock": 50, "type": "merch", "new": true},' +
+    '{"name": "Outrage! Is Now T-Shirt", "price": 17.99, "image": "../assets/dfa_outraget-shirt.png", "description": "Short sleeved", "stock": 50, "type": "merch", "new": true},' +
+    '{"name": "Big Heads Black T-Shirt", "price": 17.99, "image": "../assets/big_heads_black_tshirt_.jpg", "description": "Short sleeved", "stock": 50, "type": "merch", "new": true},' +
+    '{"name": "Outrage! Is Now Hoodie", "price": 34.99, "image": "../assets/dfa_outragehoodie.png", "description": "Hoodie", "stock": 50, "type": "merch", "new": true}' +
     ']}';
 
 var store_data;
@@ -94,10 +94,10 @@ async function filter(type) {
 
     await fade_all_store_items();
 
+    current_type = type;
+
     if (type == 'checkout')
         checkout();
-
-    current_type = type;
 
     store_data.items.forEach((item) => {
         if ((type == "new" && item.new) || type == item.type)
@@ -158,10 +158,10 @@ function close_enlarged_item() {
     $('.store-item-enlarged').fadeOut(200, function () {
         this.remove();
     });
+    enlarged = false;
 }
 
 function checkout() {
-
     var $checkout = $('<section></section>').addClass('checkout-container');
     $checkout.appendTo($('.store-wrapper'));
 
