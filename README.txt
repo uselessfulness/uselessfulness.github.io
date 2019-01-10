@@ -24,8 +24,8 @@
     NB that the majority of this page is generated at runtime and changes
     often, so there may be deviations from the W3C standard not shown here
 
-    One such example would be the lack of alt tags on images, but this was
-    corrected regardless.
+    One such example would have been the lack of alt tags on images, but this
+    was corrected regardless.
 
     ERROR   Element a not allowed as child of element ul
             - As previous
