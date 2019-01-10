@@ -16,6 +16,7 @@
 
 /* The nav buttons for the store */
 .store-nav ul li {
+    width: 8ex;
     margin-left: 2vw;
     margin-right: 2vw;
     border-style: solid;
