@@ -1,7 +1,7 @@
 /* Override the main colour with pink */
 body {
     text-align: center;
-    transition: background-color 3s ease;
+    transition: 1s;
 }
 
 .body-pink {

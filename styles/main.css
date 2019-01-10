@@ -1,5 +1,6 @@
 /* NB on fonts: didn't end up hosting them due to copyright worries and not hosted anywhere I could find, so best hope the user has them huh :B */
 /* luckily the site looks okay with standard fonts */
+
 body {
     color: var(--white1);
     font-family: "Inconsolata", monospace;
@@ -18,6 +19,11 @@ h1, h2, h3 {
     font-family: "Franklin Gothic", sans-serif;
 }
 
+h1 {
+    text-align: center;
+}
+
+/* Generic wrapper for the entire page */
 .flex-wrapper {
     display: -webkit-flex;
     display: flex;
@@ -30,10 +36,6 @@ a {
     color: white;
     text-decoration: none;
     font-weight: bold;
-}
-
-h1 {
-    text-align: center;
 }
 
 /* For the global and store navbars */
@@ -59,6 +61,11 @@ nav ul li {
     padding-right: 0.5vw;
     padding-top: 0.4vw;
     padding-bottom: 0.4vw;
+    transition: 0.2s;
+}
+
+nav ul li:hover {
+    background-color: var(--grey1);
 }
 
 /* Logo resizing again */
