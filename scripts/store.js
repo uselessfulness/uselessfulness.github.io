@@ -62,7 +62,7 @@ $(function main() {
                     )
                     .append(
                         $('<p></p>')
-                            .text('View Details Button')
+                            .text('View Details')
                     )
             );
         store_data.items[i].$element = $el;
@@ -149,7 +149,7 @@ async function enlarge(item_index) {
                     .append(
                         $('<a></a>')
                             .attr({'href': '#'})
-                            .text('Add To Checkout Button')
+                            .text('Add To Checkout')
                             .click(function () {
                                 // In this case we can be sure that item_index is the same, since it is assigned just before this event becomes available
                                 localStorage.setItem(item_index + 'quantity', '1');
