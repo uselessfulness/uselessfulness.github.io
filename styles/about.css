@@ -1,9 +1,11 @@
+/* The container for the entire timeline */
 .timeline {
     position: relative;
     min-width: 380px;
     margin: 0;
 }
 
+/* The line in timeline */
 .timeline::after {
     content: '';
     position: absolute;
@@ -14,6 +16,7 @@
     left: 10%;
 }
 
+/* Contains each item in the timeline */
 .container {
     padding: 10px 40px;
     position: relative;
@@ -21,6 +24,7 @@
     left: 10%;
 }
 
+/* Puts a little dot next to items */
 .container::after {
     content: '';
     position: absolute;
@@ -34,6 +38,7 @@
     z-index: 1;
 }
 
+/* The text proper container */
 .content {
     padding: 1px 10px;
     background-color: var(--black2);

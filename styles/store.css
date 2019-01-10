@@ -1,3 +1,4 @@
+/* Contains everything below the header and nav */
 .store-wrapper {
     display: flex;
     justify-content: flex-start;
@@ -9,13 +10,17 @@
     margin: auto;
 }
 
-/*
-.store-wrapper::after {
-  content: "";
-  flex: auto;
+/* The nav buttons for the store */
+.store-nav ul li {
+    margin-left: 2vw;
+    margin-right: 2vw;
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--white1);
+    background-color: var(--red1);
 }
-*/
 
+/* The container for store items */
 .store-wrapper li {
     padding: 8px;
     display: inline;
@@ -23,6 +28,7 @@
     background-color: var(--black2);
 }
 
+/* The items themselves */
 .store-item {
     width: 280px;
     display: block;
@@ -40,18 +46,10 @@
     width: 150px;
 }
 
-.store-nav ul li {
-    margin-left: 2vw;
-    margin-right: 2vw;
-    border-style: solid;
-    border-width: 1px;
-    border-color: var(--white1);
-    background-color: var(--red1);
-}
-
+/* Represents an item when its been clicked on, has more info and lets you add to cart */
 .store-item-enlarged {
     /* 550 = image height + space for text and padding */
-    height: 550px; /* temp */
+    height: 550px;
     width: 100%;
     position: relative;
     margin: 10px;
@@ -79,6 +77,7 @@
     width: 250px;
 }
 
+/* For the checkout */
 .checkout-container {
     display: flex;
     margin: 10px;
@@ -86,6 +85,7 @@
     background-color: var(--black2);
 }
 
+/* Product for products, summary for the sum of costs and a button that would buy things if it was an actual store */
 .checkout-product, .checkout-summary {
     display: inline-block;
     margin: 10px;
@@ -98,13 +98,15 @@
     width: 150px;
 }
 
+/* Lets us use decimals for calculations and not worry about adding to the text every time */
 .item-price:before {
     content: '£';
 }
 
-@media only screen and (max-width: 380px) {
+/* Resize store nav to fit to smaller screens */
+@media only screen and (max-width: 480px) {
     .store-nav ul li {
-        margin-left: 2px;
-        margin-right: 2px;
+        margin-left: 1px;
+        margin-right: 1px;
     }
 }

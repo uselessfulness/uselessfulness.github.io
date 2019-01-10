@@ -1,7 +1,5 @@
+/* Some colours for site wide consistency should we decide to change anything */
 :root {
-    --sans: franklin-gothic, sans-serif;
-    --mono: inconsolata, monospace;
-
     --pink1: #f0a4be;
     --red1: #d9311c;
     --black1: #000;
