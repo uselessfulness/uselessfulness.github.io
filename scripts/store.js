@@ -46,10 +46,7 @@ $(function main() {
                     .addClass('store-item')
                     .append(
                         $('<img/>')
-                            .attr({
-                                'src': item.image,
-                                'alt': item.name
-                            })
+                            .attr({'src': item.image})
                     )
                     .append(
                         $('<p></p>')
@@ -126,10 +123,7 @@ async function enlarge(item_index) {
             .addClass('store-item-enlarged')
             .append(
                 $('<img/>')
-                    .attr({
-                        'src': item.image,
-                        'alt': item.name
-                    })
+                    .attr({'src': item.image})
             )
             .append(
                 $('<div></div>')
@@ -185,10 +179,7 @@ function checkout() {
                 .addClass('checkout-product')
                 .append(
                     $('<img/>')
-                        .attr({
-                            'src': item.image,
-                            'alt': item.name
-                        })
+                        .attr({'src': item.image})
                 )
                 .append(
                     $('<h3></h3>')
