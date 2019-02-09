@@ -1,16 +1,16 @@
 // Just a string for now, since we're static and can't really 'load' the json from anywhere
 // TODO make user section
 var store_items_json = '{"items": [' +
-    '{"name": "The Physical World CD", "price": 10.99, "image": "../assets/Death-From-Above-1979-The-Physical-World.jpg", "description": "Death From Above\'s Second studio album, now available on CD", "customisable": true, "stock": 50, "type": "music", "new": true},' +
-    '{"name": "The Physical World Vinyl", "price": 39.99, "image": "../assets/Death-From-Above-1979-The-Physical-World.jpg", "description": "Description of second item", "customisable": true, "stock": 50, "type": "music", "new": true},' +
-    '{"name": "Heads Up CD", "price": 4.99, "image": "../assets/dfa-heads-up.jpg", "description": "Description of third item", "customisable": true, "stock": 50, "type": "merch", "new": false},' +
-    '{"name": "Romance Bloody Romance CD", "price": 9.99, "image": "../assets/dfa-im-not-sure.jpg", "description": "Description of fourth item", "customisable": true, "stock": 50, "type": "merch", "new": true},' +
-    '{"name": "You\'re A Woman I\'m A Machine CD", "price": 9.99, "image": "../assets/yourewomanimmachinecd.jpg", "description": "Description of fifth item", "customisable": true, "stock": 50, "type": "music", "new": false},' +
-    '{"name": "You\'re A Woman I\'m A Machine Vinyl", "price": 44.99, "image": "../assets/yourewomanimmachinecd.jpg", "description": "Description of sixth item", "customisable": true, "stock": 50, "type": "music", "new": false},' +
-    '{"name": "Outrage! Is Now Long Sleeve T-Shirt", "price": 21.99, "image": "../assets/dfa_outragelongsleevet-shirt.png", "description": "Description of seventh item", "customisable": true, "stock": 50, "type": "music", "new": false},' +
-    '{"name": "Outrage! Is Now T-Shirt", "price": 17.99, "image": "../assets/dfa_outraget-shirt.png", "description": "Description of eigth item", "customisable": true, "stock": 50, "type": "music", "new": true},' +
-    '{"name": "Big Heads Black T-Shirt", "price": 17.99, "image": "../assets/big_heads_black_tshirt_.jpg", "description": "Description of ninth item", "customisable": true, "stock": 50, "type": "merch", "new": true},' +
-    '{"name": "Outrage! Is Now Hoodie", "price": 34.99, "image": "../assets/dfa_outragehoodie.png", "description": "Description of tenth item", "customisable": true, "stock": 50, "type": "merch", "new": false}' +
+    '{"name": "First Item", "price": 4.99, "image": "../assets/150x150.png", "image_large": "../assets/250x250.png", "description": "Description of first item", "customisable": true, "stock": 50, "type": "music", "new": true},' +
+    '{"name": "Second Item", "price": 4.99, "image": "../assets/150x150.png", "image_large": "../assets/250x250.png", "description": "Description of second item", "customisable": true, "stock": 50, "type": "music", "new": true},' +
+    '{"name": "Third Item", "price": 4.99, "image": "../assets/150x150.png", "image_large": "../assets/250x250.png", "description": "Description of third item", "customisable": true, "stock": 50, "type": "merch", "new": false},' +
+    '{"name": "Fourth Item", "price": 4.99, "image": "../assets/150x150.png", "image_large": "../assets/250x250.png", "description": "Description of fourth item", "customisable": true, "stock": 50, "type": "merch", "new": true},' +
+    '{"name": "Fifth Item", "price": 4.99, "image": "../assets/150x150.png", "image_large": "../assets/250x250.png", "description": "Description of fifth item", "customisable": true, "stock": 50, "type": "music", "new": false},' +
+    '{"name": "Sixth Item", "price": 4.99, "image": "../assets/150x150.png", "image_large": "../assets/250x250.png", "description": "Description of sixth item", "customisable": true, "stock": 50, "type": "music", "new": false},' +
+    '{"name": "Seventh Item", "price": 4.99, "image": "../assets/150x150.png", "image_large": "../assets/250x250.png", "description": "Description of seventh item", "customisable": true, "stock": 50, "type": "music", "new": false},' +
+    '{"name": "Eigth Item", "price": 4.99, "image": "../assets/150x150.png", "image_large": "../assets/250x250.png", "description": "Description of eigth item", "customisable": true, "stock": 50, "type": "music", "new": true},' +
+    '{"name": "Ninth Item", "price": 4.99, "image": "../assets/150x150.png", "image_large": "../assets/250x250.png", "description": "Description of ninth item", "customisable": true, "stock": 50, "type": "merch", "new": true},' +
+    '{"name": "Tenth Item", "price": 4.99, "image": "../assets/150x150.png", "image_large": "../assets/250x250.png", "description": "Description of tenth item", "customisable": true, "stock": 50, "type": "merch", "new": false}' +
     ']}';
 
 var store_data;
@@ -123,7 +123,7 @@ async function enlarge(item_index) {
             .addClass('store-item-enlarged')
             .append(
                 $('<img/>')
-                    .attr({'src': item.image})
+                    .attr({'src': item.image_large})
             )
             .append(
                 $('<div></div>')
