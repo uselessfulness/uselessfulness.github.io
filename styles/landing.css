@@ -1,14 +1,14 @@
 body {
     background-color: var(--pink1);
-    text-align: center;
 }
 
 header {
-    text-align: center;
-    width: 100%;
+    max-width: 300px;
+    margin: auto;
     margin-top: 25vh;
     margin-bottom: 20vh;
 }
+
 
 nav ul li {
     color: var(--black2);
@@ -17,10 +17,4 @@ nav ul li {
     padding: 2vw;
     margin-left: 2vw;
     margin-right: 2vw;
-}
-
-@media only screen and (max-width: 480px) {
-    header img {
-        width: 250px;
-    }
 }
