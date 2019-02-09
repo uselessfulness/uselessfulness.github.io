@@ -1,15 +1,7 @@
 /* Override the main colour with pink */
 body {
-    text-align: center;
-    transition: background-color 3s ease;
-}
-
-.body-pink {
     background-color: var(--pink1);
-}
-
-.body-black {
-    background-color: var(--black1);
+    text-align: center;
 }
 
 /* For the band name image */
