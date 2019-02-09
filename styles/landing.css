@@ -1,10 +1,8 @@
-/* Override the main colour with pink */
 body {
     background-color: var(--pink1);
     text-align: center;
 }
 
-/* For the band name image */
 header {
     text-align: center;
     width: 100%;
@@ -12,7 +10,6 @@ header {
     margin-bottom: 20vh;
 }
 
-/* contains the buttons to go to different pages on the site */
 nav ul li {
     color: var(--black2);
     background-color: white;
@@ -22,7 +19,6 @@ nav ul li {
     margin-right: 2vw;
 }
 
-/* make the logo smaller as needed */
 @media only screen and (max-width: 480px) {
     header img {
         width: 250px;
