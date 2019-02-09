@@ -1,4 +1,4 @@
-# https://uselessful.me : https://youtu.be/-K5EiPrqqmo
+# https://uselessful.me
 
 ## Validation
 
