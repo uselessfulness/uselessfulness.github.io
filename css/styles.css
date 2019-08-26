@@ -62,9 +62,3 @@ nav a:hover {
   /* Overwrites the hover for a tags in the navbar */
   background: white;
 }
-
-@media all and (min-width: 780px) {
-    html {
-        font-size: 20px;
-    }
-}
