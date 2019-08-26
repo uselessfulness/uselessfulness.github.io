@@ -1,0 +1,64 @@
+body {
+  margin-left: 1em;
+  margin-right: 1em;
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.2rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Raleway', sans-serif;
+}
+
+code {
+  font-family: 'Roboto Mono', monospace;
+}
+
+a {
+  color: #606060;
+  text-decoration-style: dotted;
+}
+
+a:hover {
+  color: #a9a9a9;
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+header p {
+  max-width: 350px;
+  text-align: center;
+  padding: 0px 10%;
+  margin: 0px;
+}
+
+nav ul {
+  display: flex;
+  flex-flow: row wrap;
+  padding: 0px;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.25rem;
+}
+
+nav a {
+  text-decoration: none;
+  display: block;
+  padding: 1rem 1.2rem;
+  color: inherit;
+}
+
+nav a:hover {
+  color: inherit;
+  background: lightgrey;
+}
+
+.title:hover {
+  /* Overwrites the hover for a tags in the navbar */
+  background: white;
+}
