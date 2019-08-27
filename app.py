@@ -1,7 +1,7 @@
 # Browsers don't like absolute paths for local HTML files, hence this script.
 from flask import Flask, render_template, send_from_directory
 
-app = Flask(__name__, template_folder='compiled')
+app = Flask(__name__, template_folder='docs')
 
 @app.route('/')
 def index():
