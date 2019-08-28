@@ -11,6 +11,10 @@ def index():
 def blog():
     return render_template("blog/index.html")
 
+@app.route('/blog/<path:path>')
+def send_blog(path):
+    return send_from_directory("docs/blog", path)
+
 @app.route('/about/')
 def about():
     return render_template("about/index.html")
