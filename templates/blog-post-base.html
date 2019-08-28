@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block head %}
+    <link href="/css/blog.css" rel="stylesheet">
+{% endblock %}
+{% block main %}
+    <article class="blog-post">
+        {% block post %}
+        {% endblock %}
+    </article>
+{% endblock %}

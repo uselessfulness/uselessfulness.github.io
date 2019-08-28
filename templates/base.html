@@ -5,8 +5,8 @@
         <meta name="viewport" content="width=device-width">
         <link href="https://fonts.googleapis.com/css?family=Raleway:400,700|Crimson+Pro:300,300i,600|Roboto+Mono:400,700&display=swap" rel="stylesheet">
         <link href="/css/styles.css" rel="stylesheet">
-        
-        
+        {% block head %}
+        {% endblock %}
     </head>
     <body>
         <header>
@@ -19,9 +19,8 @@
             </nav>
         </header>
         <main>
-            
-    <p class="placeholder">Welcome to the index page. At the moment, it doesn't index much of anything, but please take your time to enjoy the noiselessness.</p>
-
+            {% block main %}
+            {% endblock %}
         </main>
     </body>
 </html>

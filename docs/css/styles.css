@@ -22,17 +22,11 @@ a:hover {
   color: #a9a9a9;
 }
 
-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-header p {
+.placeholder {
   max-width: 350px;
   text-align: center;
   padding: 0px 10%;
-  margin: 0px;
+  margin: 0px auto;
 }
 
 nav ul {
