@@ -9,11 +9,13 @@ def compile_templates(env, templates_dir):
         name = template_file.name
         if not 'base' in name:
             template = env.get_template(name)
-            # TODO Add metadata to /blog/index.html
             try:
                 (d, n) = name.split('_')
                 with open(output_dir / d / n, 'w+') as f:
-                    f.write(template.render())
+                    if name == 'blog_index.html':
+                        f.write(template.render(posts=metadata))
+                    else:
+                        f.write(template.render())
             except ValueError:
                 with open(output_dir / name, 'w+') as f:
                     f.write(template.render())
@@ -25,20 +27,24 @@ def create_blog_templates(templates_dir):
         # Add metadata in filename sans .md extension to list.
         metadata.append(PostMetadata(post_file.name[:-3]))
         with open(post_file, 'r') as fr:
-            name = metadata[-1].name
-            with open(templates_dir / f'blog_{name}.html', 'w+') as fw:
+            file = metadata[-1].file
+            with open(templates_dir / f'blog_{file}', 'w+') as fw:
                 fw.write(
                     f'{{% extends "blogpost-base.html" %}}\n'
                     f'{{% block post %}}\n'
                     f'{markdown(fr.read())}\n'
                     f'{{% endblock %}}'
                 )
-    # Return metadata so it can be used in compiling /blog/index.html
+            # Grabs the post title to use in /blog/index.html
+            fr.seek(0)
+            metadata[-1].title = fr.readline().rstrip()[2:]
+    # Return metadata so it can be used in /blog/index.html
     return metadata
 
 class PostMetadata:
     def __init__(self, filename):
-        (self.date, self.name) = filename.split('_')
+        (self.date, self.file) = filename.split('_')
+        self.file += '.html'
 
 if __name__ == '__main__':
     # Load directories to read from/write to.
