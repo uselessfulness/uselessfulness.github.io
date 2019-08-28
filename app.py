@@ -17,4 +17,4 @@ def about():
 
 @app.route('/css/<path:path>')
 def send_css(path):
-    return send_from_directory('compiled/css', path)
+    return send_from_directory("docs/css", path)
