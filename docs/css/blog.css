@@ -1,4 +1,12 @@
+/* General Blog Stuff */
+.blog-post {
+  margin: auto;
+  max-width: 35em;
+}
 
+.blog-post h1 {
+  text-align: center;
+}
 
 /* Blog Index (chiefly) */
 ol.dotted {
