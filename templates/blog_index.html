@@ -4,7 +4,7 @@
 {% endblock %}
 {% block main %}
     <h2 style="text-align: center">Blog</h2>
-    <ol id="archive">
+    <ol class=dotted>
     {% for post in posts %}
         <li>
             <a href="{{ post.file }}">
