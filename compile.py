@@ -51,7 +51,7 @@ class PostMetadata:
     def template(self):
         return (
             f'{{% extends "blogpost-base.html" %}}\n'
-            f'{{% block title %}}{self.title}{{% endblock %}}\n'
+            f'{{% block title %}}{self.title.lower()}{{% endblock %}}\n'
             f'{{% block post %}}\n'
             f'{self.content}\n'
             f'{{% endblock %}}'
