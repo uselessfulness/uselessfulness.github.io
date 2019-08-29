@@ -1,9 +1,20 @@
 {% extends "base.html" %}
+{% block head %}
+    <link href="/css/blog.css" rel="stylesheet">
+{% endblock %}
 {% block main %}
-    <h1>Blog</h1>
-    <ul>
+    <h2 style="text-align: center">Blog</h2>
+    <ol id="archive">
     {% for post in posts %}
-        <li><a href="{{ post.file }}">{{ post.title}} - {{ post.date }}</a></li>
+        <li>
+            <a href="{{ post.file }}">
+                <div class="dots"></div>
+                <div class="under-dots">
+                    <span class="left">{{ post.title}}</span>
+                    <span class="right">{{ post.date }}</span>
+                </div>
+            </a>
+        </li>
     {% endfor %}
-    </ul>
+    </ol>
 {% endblock %}

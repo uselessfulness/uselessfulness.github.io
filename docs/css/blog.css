@@ -1,0 +1,33 @@
+ol#archive {
+  list-style-type: none;
+  padding: 0px;
+  width: 100%;
+}
+
+#archive li {
+  margin: auto;
+  max-width: 30em;
+}
+
+.dots {
+  border-bottom: thin dotted gray;
+  width: 100%;
+  height: 1.1em;
+}
+
+#archive a {
+  text-decoration: none;
+}
+
+.under-dots {
+  margin-top: -1.1em;
+}
+
+.left {
+  padding-right: 0.2em;
+}
+
+.right {
+  float: right;
+  padding-left: 0.2em;
+}
