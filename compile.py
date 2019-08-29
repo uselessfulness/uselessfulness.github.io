@@ -3,7 +3,7 @@ from pathlib import Path
 from jinja2 import Template, Environment, FileSystemLoader
 from mistune import markdown
 
-def compile_templates(env, templates_dir):
+def compile_templates(env, templates_dir, metadata):
     output_dir = Path('docs')
     for template_file in templates_dir.iterdir():
         name = template_file.name
@@ -11,34 +11,42 @@ def compile_templates(env, templates_dir):
             template = env.get_template(name)
             try:
                 (d, n) = name.split('_')
+                print(f'Compiling {d}/{n}...')
                 with open(output_dir / d / n, 'w+') as f:
                     if name == 'blog_index.html':
                         f.write(template.render(posts=metadata))
                     else:
                         f.write(template.render())
             except ValueError:
+                print(f'Compiling {name}...')
                 with open(output_dir / name, 'w+') as f:
                     f.write(template.render())
+                    
+    for blogpost in metadata:
+        print(f'Compiling {blogpost.file}...')
+        with open(output_dir / 'blog' / blogpost.file, 'w+') as f:
+            f.write(env.from_string(blogpost.template).render())
 
 def create_blog_templates(templates_dir):
     metadata = []
     posts_dir = Path('posts')
     for post_file in posts_dir.iterdir():
+        print(f'Adding {post_file.name} to posts...')
         # Add metadata in filename sans .md extension to list.
         metadata.append(PostMetadata(post_file.name[:-3]))
-        with open(post_file, 'r') as fr:
-            file = metadata[-1].file
-            with open(templates_dir / f'blog_{file}', 'w+') as fw:
-                fw.write(
-                    f'{{% extends "blogpost-base.html" %}}\n'
-                    f'{{% block post %}}\n'
-                    f'{markdown(fr.read())}\n'
-                    f'{{% endblock %}}'
-                )
-            # Grabs the post title to use in /blog/index.html
-            fr.seek(0)
-            metadata[-1].title = fr.readline().rstrip()[2:]
-    # Return metadata so it can be used in /blog/index.html
+        # Add template to object.
+        with open(post_file, 'r') as f:
+            # Grab the post title to use in /blog/index.html
+            metadata[-1].title = f.readline().rstrip()[2:]
+            # Return to top and create template from entire content.
+            f.seek(0)
+            metadata[-1].template = (
+                f'{{% extends "blogpost-base.html" %}}\n'
+                f'{{% block title %}}{metadata[-1].title.lower()}{{% endblock %}}\n'
+                f'{{% block post %}}\n'
+                f'{markdown(f.read())}\n'
+                f'{{% endblock %}}'
+            )
     return metadata
 
 class PostMetadata:
@@ -55,4 +63,4 @@ if __name__ == '__main__':
     # Create templates for blog posts and get metadata for each.
     metadata = create_blog_templates(templates_dir)
     # Write all templates to /docs
-    compile_templates(env, templates_dir)
+    compile_templates(env, templates_dir, metadata)
