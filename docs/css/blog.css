@@ -18,20 +18,12 @@ ol.dotted {
 .dotted li {
   margin: auto;
   max-width: 30em;
-}
-
-.dots {
   border-bottom: thin dotted gray;
-  width: 100%;
-  height: 1.1em;
 }
 
 .dotted a {
   text-decoration: none;
-}
-
-.under-dots {
-  margin-top: -1.1em;
+  display: block;
 }
 
 .left {

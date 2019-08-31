@@ -9,11 +9,8 @@
     {% for post in posts %}
         <li>
             <a href="{{ post.file }}">
-                <div class="dots"></div>
-                <div class="under-dots">
-                    <span class="left">{{ post.title}}</span>
-                    <span class="right">{{ post.date }}</span>
-                </div>
+                <span class="left">{{ post.title}}</span>
+                <span class="right">{{ post.date }}</span>
             </a>
         </li>
     {% endfor %}
