@@ -14,7 +14,7 @@ def compile_templates(env, templates_dir, metadata):
                 print(f'Compiling {d}/{n}...')
                 with open(output_dir / d / n, 'w+') as f:
                     if name == 'blog_index.html':
-                        f.write(template.render(posts=metadata))
+                        f.write(template.render(posts=reversed(metadata)))
                     else:
                         f.write(template.render())
             except ValueError:
