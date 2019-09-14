@@ -31,14 +31,15 @@ def create_blog_templates(templates_dir):
     metadata = []
     posts_dir = Path('posts')
     for post_file in posts_dir.iterdir():
-        print(f'Adding {post_file.name} to posts...')
-        metadata.append(PostMetadata(post_file.name[:-3]))
-        with open(post_file, 'r') as f:
-            # Grab the post title to use in /blog/index.html and <title> tags.
-            metadata[-1].title = f.readline().rstrip()[2:]
-            # Return to top and and entire file contents.
-            f.seek(0)
-            metadata[-1].content = markdown(f.read())
+        if not post_file.name.startswith('.'):
+            print(f'Adding {post_file.name} to posts...')
+            metadata.append(PostMetadata(post_file.name[:-3]))
+            with open(post_file, 'r') as f:
+                # Grab the post title for /blog/index.html and <title> tags.
+                metadata[-1].title = f.readline().rstrip()[2:]
+                # Return to top and and entire file contents.
+                f.seek(0)
+                metadata[-1].content = markdown(f.read())
     return metadata
 
 class PostMetadata:
