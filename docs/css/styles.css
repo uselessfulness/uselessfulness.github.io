@@ -14,12 +14,12 @@ code {
 }
 
 a {
-  color: #606060;
+  color: #d67f40;
   text-decoration-style: dotted;
 }
 
 a:hover {
-  color: #a9a9a9;
+  color: #d7ab8b;
 }
 
 .placeholder {

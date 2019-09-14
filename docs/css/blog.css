@@ -18,7 +18,12 @@ ol.dotted {
 .dotted li {
   margin: auto;
   max-width: 30em;
-  border-bottom: thin dotted gray;
+  border-bottom: thin dotted #d67f40;
+}
+
+.dotted li:hover, .dotted li:hover * {
+  color: #d7ab8b;
+  border-color: #d7ab8b;
 }
 
 .dotted a {
@@ -33,4 +38,5 @@ ol.dotted {
 .right {
   float: right;
   padding-left: 0.2em;
+  color: #d99665;
 }
