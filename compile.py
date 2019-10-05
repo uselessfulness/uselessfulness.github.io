@@ -39,7 +39,7 @@ def create_blog_templates(templates_dir):
     renderer = highlight.HighlightRenderer(css_style="docs/css/highlight.css")
     parse_markdown = Markdown(renderer=renderer)
     posts_dir = Path('posts')
-    for post_file in posts_dir.iterdir():
+    for post_file in sorted(posts_dir.iterdir()):
         if not post_file.name.startswith('.'):
             print(f'Adding {post_file.name} to posts...')
             metadata.append(BlogPost(post_file.name[:-3]))
