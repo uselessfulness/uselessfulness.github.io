@@ -21,8 +21,12 @@
   font-size: 1em;
 }
 
-.blog-post code {
+.blog-post code, .blog-post .highlight {
   font-size: 0.8em;
+}
+
+.blog-post .highlight pre {
+  padding: 6px 10px;
 }
 
 /* Blog Index (chiefly) */

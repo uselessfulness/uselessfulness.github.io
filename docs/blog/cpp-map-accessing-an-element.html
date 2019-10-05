@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>c++ map: accessing an element - murr.dev</title>
+        <link href="https://fonts.googleapis.com/css?family=Raleway:400,700|Crimson+Pro:300,300i,600|Roboto+Mono:400,700&display=swap" rel="stylesheet">
+        <link href="/css/styles.css" rel="stylesheet">
+        
+    <link href="/css/blog.css" rel="stylesheet">
+    <link href="/css/highlight.css" rel="stylesheet">
+
+    </head>
+    <body>
+        <header>
+            <nav>
+                <ul>
+                    <li><a class="title" href="/"><b>murr.dev</b></a></li>
+                    <li><a href="/blog/">blog</a></li>
+                    <li><a href="/about/">about</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            
+    <article class="blog-post">
+        
+<h1>C++ Map: Accessing an Element</h1>
+<h2>Or, Layers on Layers on Layers</h2>
+<p>
+
+</p>
+<p>This post isn't meant to be a put down of C++ (I'm far too green with C++ to
+justify doing something like that).
+Part of what makes languages so fun to learn are the small ways
+they get you to rethink how to conceptualise or implement a concept. This post
+provides an example in a place I didn't expect to find one.</p>
+<h2>The Problem</h2>
+<p>From <a href="https://exercism.io/tracks/cpp/exercises/nucleotide-count">exercism.io's 'nucleotide-count' problem</a></p>
+<blockquote><p>Given a string of DNA (ie containing only the characters <code>ACGT</code>) count the
+frequencies of each 'nucleotide' (a character in the string).</p>
+</blockquote>
+<p>Our interface looks like this:</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DnaCounter</span>
+<span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">char</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">ntc</span><span class="p">;</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">DnaCounter</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">nt</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="nf">count</span><span class="p">(</span><span class="kt">char</span> <span class="n">c</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">char</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">nucleotide_counts</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+<p>We populate the map of nucleotide frequencies <code>ntc</code> when an object is
+initialised, and just implement interfaces for retrieving values from the map.
+The <code>count</code> function returns the frequency for a given nucleotide, and
+<code>nucleotide_counts</code> returns all frequencies as a map.</p>
+<p>Notice the <code>const</code> declaration after the methods. Coming from C,
+this was a bit non-intuitive, but there are some more uses for <code>const</code> in C++.
+(There's a good overview <a href="http://duramecho.com/ComputerInformation/WhyHowCppConst.html">here</a>).
+In our case, it's necessary because we want to tell the C++ compiler that we
+aren't going to make changes to member variables: we are just going to access
+and then return values. The tests that exercism provides with this problem
+won't compile unless this declaration is made, and it's relevant to discovering
+the nature of C++'s map.</p>
+<p>Finally, we get around to implementing methods. My initial implementation
+looked something like this:
+</p>
+<div class="highlight"><pre><span></span><span class="n">DnaCounter</span><span class="o">::</span><span class="n">DnaCounter</span><span class="p">(</span><span class="n">string</span> <span class="n">dna_string</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">ntc</span> <span class="o">=</span> <span class="p">{{</span><span class="sc">&#39;A&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="sc">&#39;C&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="sc">&#39;G&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">},</span> <span class="p">{</span><span class="sc">&#39;T&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">}};</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">char</span> <span class="nl">c</span> <span class="p">:</span> <span class="n">dna_string</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">ntc</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">map</span><span class="o">&lt;</span><span class="kt">char</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">DnaCounter</span><span class="o">::</span><span class="n">nucleotide_counts</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">ntc</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">DnaCounter</span><span class="o">::</span><span class="n">count</span><span class="p">(</span><span class="kt">char</span> <span class="n">c</span><span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">ntc</span><span class="p">[</span><span class="n">c</span><span class="p">];</span>
+<span class="p">}</span>
+</pre></div>
+<p>
+We don't check for malformed DNA strings yet, so this should fail at least some
+of the tests provided, but there's a bigger problem with the above code: it
+doesn't compile.</p>
+<div class="highlight"><pre><span></span><span class="n">nucleotide_count</span><span class="p">.</span><span class="nl">cpp</span><span class="p">:</span> <span class="n">In</span> <span class="n">member</span> <span class="n">function</span> <span class="err">‘</span><span class="kt">int</span> <span class="n">DnaCounter</span><span class="o">::</span><span class="n">count</span><span class="p">(</span><span class="kt">char</span><span class="p">)</span> <span class="k">const</span><span class="err">’</span><span class="o">:</span>
+<span class="n">nucleotide_count</span><span class="p">.</span><span class="nl">cpp</span><span class="p">:</span><span class="mi">16</span><span class="o">:</span><span class="mi">17</span><span class="o">:</span> <span class="nl">error</span><span class="p">:</span> <span class="n">passing</span> <span class="err">‘</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">char</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span><span class="err">’</span> <span class="n">as</span> <span class="err">‘</span><span class="k">this</span><span class="err">’</span>
+<span class="n">argument</span> <span class="n">discards</span> <span class="n">qualifiers</span> <span class="p">[</span><span class="o">-</span><span class="n">fpermissive</span><span class="p">]</span>
+   <span class="mi">16</span> <span class="o">|</span>     <span class="k">return</span> <span class="n">ntc</span><span class="p">[</span><span class="n">c</span><span class="p">];</span>
+      <span class="o">|</span>                 <span class="o">^</span>
+</pre></div>
+<p>You'll recall that we declared the method as being const, promising not to
+change any inputs to the method. All we're doing is accessing an element of the
+map, so why would the compiler complain that we're violating this promise?</p>
+<p>Our constructor provides the last clue we need to pinpoint the problem. When
+given a key not currently in the map, it doesn't throw any errors, despite (in
+theory) performing addition with an object that doesn't exist. In fact, it
+works as if the value of any new key was already initialised to 0:
+</p>
+<div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="n">DnaCounter</span> <span class="n">c</span> <span class="o">=</span> <span class="n">DnaCounter</span><span class="p">(</span><span class="s">&quot;BAR&quot;</span><span class="p">);</span>
+    <span class="n">map</span><span class="o">&lt;</span><span class="kt">char</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">m</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">nucleotide_counts</span><span class="p">();</span>
+    <span class="c1">// m = {{&#39;A&#39;: 1}, {&#39;B&#39;: 1}, {&#39;C&#39;: 0}, {&#39;G&#39;: 0}, {&#39;R&#39;: 1}, {&#39;T&#39;: 0}}</span>
+<span class="p">}</span>
+</pre></div>
+<p>
+At this point, there's not much left to do but RTFM.</p>
+<h2>The C++ <code>map</code> Class</h2>
+<h3>map::operator[]</h3>
+<p>For some key k, if k exists the [] operator returns a reference to the value at
+that key.</p>
+<p>If k does not exist, then a new value is inserted and intialised at k. This is
+why our code breaks, and why our seemingly undefined ints have values of 0.</p>
+<p>So, how can we ensure our program does not attempt to change the map when we
+access an element?</p>
+<h3>map::count?</h3>
+<p>Perhaps we could ensure that the value exists before attempting to access it?
+<code>map::count</code> allows us to check for the existence of a key-value pair in the
+map, but there's some problems with this method.</p>
+<p>First, it's kind of clumsy: we need to access the map at the given key twice,
+rather than just once and discarding non-existant pairs.</p>
+<p>Additionally, the error we've run into due to const qualifying our method was a
+compiler issue: we still can't access the map in a way that is defined as being
+able to alter a member variable.</p>
+<h3>map::find and map::at</h3>
+<p>One solution is afforded us in the form of <code>map::find</code>. This method returns an
+iterator to the position of the desired value, and if it's not found, it
+returns an iterator to <code>map::end</code>. We could implement <code>DnaCounter::count</code> as
+follows:</p>
+<div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">DnaCounter</span><span class="o">::</span><span class="n">count</span><span class="p">(</span><span class="kt">char</span> <span class="n">c</span><span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">ntc</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">it</span> <span class="o">!=</span> <span class="n">ntc</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">invalid_argument</span><span class="p">(</span><span class="s">&quot;Argument must be a valid DNA nucleotide.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+<p>A second option is <code>map::at</code>, which returns a reference to the value if found,
+and throws an exception if not:</p>
+<div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">DnaCounter</span><span class="o">::</span><span class="n">count</span><span class="p">(</span><span class="kt">char</span> <span class="n">c</span><span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">try</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">ntc</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="p">(</span><span class="n">out_of_range</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">throw</span> <span class="n">invalid_argument</span><span class="p">(</span><span class="s">&quot;Argument must be a valid DNA nucleotide.&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+<p>If this were, say, Python, <code>map::at</code> would always be the preferred method
+of access ('Ask Forgiveness, Not Permission'). The C++ world would generally
+rather you not use exception handling for regular program flow though.
+</p>
+<p>Additionally, <code>map::at</code> was only introduced to the class with C++11, so if you
+need to support pre-C++11...you probably have no need for this advice in the
+first place, honestly, but you can't use <code>map::at</code>.</p>
+<p>Which is the better for our case? Since a DNA nucleotide must always be one of
+A, C, G or T (all other cases are invalid by definition), I decided to
+implement <code>count</code> and the constructor using <code>map::at</code>. YMMV.</p>
+<h2>Why?</h2>
+<p>I suppose the fact that the behaviour of the default access operator took me
+by suprise is worth considering. Having come from other languages that
+implement dictionaries in the standard library or builtins, why is this the
+first time I have encountered this behaviour? Why would the most basic way of
+accessing elements in a map be implemented like this in C++?</p>
+<p>My best guess is that it has something to do with assigning values to new keys,
+and the fact that C++ keeps it simple.</p>
+<p>Inserting and returning a reference to a new element allows for insertion
+syntax like <code>m[k] = v</code>, without needing to consider how the programmer is
+going to use the mapped value (access or assignment). To do that, you would
+need to define the relationship between <code>operator[]</code> and <code>operator=</code>, or have
+<code>operator[]</code> return a type that overloads non-assignment operators to throw an
+exception if the object is empty (quite similar to how some other languages
+handle access to maps/dictionaries).</p>
+<p>Such a solution still wouldn't be able to be used in const qualified methods
+however, so its usage would not be so useful for our use case. And when you say
+it like that, a few puzzle pieces might click into place and it becomes
+more obvious that Stroustrup et al. knew what they were doing. ;)</p>
+
+
+    </article>
+
+        </main>
+    </body>
+</html>
