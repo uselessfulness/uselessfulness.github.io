@@ -4,7 +4,7 @@ It feels like the activity I do most, after pretending I know how to code, is
 pretending I know how to design, describe and defer code. Most of the
 development I do is as part of a team, and almost all of it will
 be read by someone else. This means I have to consider and communicate the
-design of my programs [before](http://zeynepaltan.info/IEEE%20SDD-1016-2009.pdf),
+design of my programs [before](https://cerealkillers490.weebly.com/uploads/2/5/7/0/25704352/sdd_thecerealkillers_1.0.pdf),
 [during](https://github.com/id-Software/Quake-III-Arena/blob/master/code/game/q_math.c#L561)
 and [after](https://xkcd.com/1296/) writing them. A travesty, I know.
 
