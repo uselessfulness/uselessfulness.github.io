@@ -27,6 +27,7 @@
 
 .blog-post .highlight pre {
   padding: 6px 10px;
+  white-space: pre-wrap;
 }
 
 /* Blog Index (chiefly) */
