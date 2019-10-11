@@ -1,11 +1,6 @@
 # C++ Map: Accessing an Element
 ## Or, Layers on Layers on Layers
 
-{# TODO #}
-{# Fix header sizes #}
-{# Add syntax highlighting to codeblocks using Prism #}
-
-
 This post isn't meant to be a put down of C++ (I'm far too green with C++ to
 justify doing something like that).
 Part of what makes languages so fun to learn are the small ways
@@ -38,10 +33,9 @@ Notice the `const` declaration after the methods. Coming from C,
 this was a bit non-intuitive, but there are some more uses for `const` in C++.
 (There's a good overview [here](http://duramecho.com/ComputerInformation/WhyHowCppConst.html)).
 In our case, it's necessary because we want to tell the C++ compiler that we
-aren't going to make changes to member variables: we are just going to access
-and then return values. The tests that exercism provides with this problem
-won't compile unless this declaration is made, and it's relevant to discovering
-the nature of C++'s map.
+aren't going to make changes to member variables. The tests that exercism
+provides with this problem won't compile unless this declaration is made, and
+it's relevant to discovering the nature of C++'s map.
 
 Finally, we get around to implementing methods. My initial implementation
 looked something like this:
@@ -80,7 +74,7 @@ argument discards qualifiers [-fpermissive]
 ```
 
 You'll recall that we declared the method as being const, promising not to
-change any inputs to the method. All we're doing is accessing an element of the
+change any member variables. All we're doing is accessing an element of the
 map, so why would the compiler complain that we're violating this promise?
 
 Our constructor provides the last clue we need to pinpoint the problem. When
