@@ -67,8 +67,7 @@ doesn't compile.
 
 ```c++
 nucleotide_count.cpp: In member function ‘int DnaCounter::count(char) const’:
-nucleotide_count.cpp:16:17: error: passing ‘const std::map<char, int>’ as ‘this’
-argument discards qualifiers [-fpermissive]
+nucleotide_count.cpp:16:17: error: passing ‘const std::map<char, int>’ as ‘this’ argument discards qualifiers [-fpermissive]
    16 |     return ntc[c];
       |                 ^
 ```
