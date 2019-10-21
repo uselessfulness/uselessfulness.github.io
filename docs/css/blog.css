@@ -1,35 +1,3 @@
-/* General Blog Stuff */
-.blog-post {
-  margin: auto;
-  max-width: 35em;
-}
-
-.blog-post h1 {
-  text-align: center;
-  font-size: 1.5em;
-}
-
-.blog-post h2 {
-  font-size: 1.25em;
-}
-
-.blog-post h3 {
-  font-size: 1.1em;
-}
-
-.blog-post h4 {
-  font-size: 1em;
-}
-
-.blog-post code, .blog-post .highlight {
-  font-size: 0.8em;
-}
-
-.blog-post .highlight pre {
-  padding: 6px 10px;
-  white-space: pre-wrap;
-}
-
 /* Blog Index (chiefly) */
 ol.dotted {
   list-style-type: none;
@@ -61,4 +29,36 @@ ol.dotted {
   float: right;
   padding-left: 0.2em;
   color: #d99665;
+}
+
+/* General Blog Stuff */
+.blog-post {
+  margin: auto;
+  max-width: 35em;
+}
+
+.blog-post h1 {
+  text-align: center;
+  font-size: 1.5em;
+}
+
+.blog-post h2 {
+  font-size: 1.25em;
+}
+
+.blog-post h3 {
+  font-size: 1.1em;
+}
+
+.blog-post h4 {
+  font-size: 1em;
+}
+
+.blog-post code, .blog-post .highlight {
+  font-size: 0.8em;
+}
+
+.blog-post .highlight pre {
+  padding: 6px 10px;
+  white-space: pre-wrap;
 }
