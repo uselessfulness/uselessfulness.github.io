@@ -3,6 +3,7 @@ from pathlib import Path
 from jinja2 import Template, Environment, FileSystemLoader
 from mistune import Markdown
 from lib import highlight
+from datetime import date
 
 def compile_templates(env, templates_dir, metadata):
     """
@@ -15,7 +16,6 @@ def compile_templates(env, templates_dir, metadata):
             template = env.get_template(name)
             try:
                 (d, n) = name.split('_')
-                print(f'Compiling {d}/{n}...')
                 with open(output_dir / d / n, 'w+') as f:
                     if name == 'blog_index.html':
                         f.write(template.render(posts=reversed(metadata)))
@@ -24,7 +24,10 @@ def compile_templates(env, templates_dir, metadata):
             except ValueError:
                 print(f'Compiling {name}...')
                 with open(output_dir / name, 'w+') as f:
-                    f.write(template.render())
+                    if name == 'feed.xml':
+                        f.write(template.render(posts=reversed(metadata)))
+                    else:
+                        f.write(template.render())
 
     for blogpost in metadata:
         print(f'Compiling {blogpost.file}...')
@@ -57,9 +60,13 @@ class BlogPost:
 
     Used to create entries for the blog's index and write HTML files in /docs.
     """
+    # TODO With addition of RSS, refactor this class to be better.
     def __init__(self, filename):
         (self.date, self.file) = filename.split('_')
+        tdate = date(*(int(x) for x in self.date.split('-')))
+        self.rss_date = tdate.strftime("%a, %d %b %Y %H:%M:%S +0000")
         self.file += '.html'
+        self.url = 'https://murr.dev/blog/' + self.file
         self.title = ''
         self.content = ''
 

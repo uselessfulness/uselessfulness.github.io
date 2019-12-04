@@ -1,11 +1,15 @@
 # Browsers don't like absolute paths for local HTML files, hence this script.
-from flask import Flask, render_template, send_from_directory
+from flask import Flask, render_template, send_from_directory, send_file
 
 app = Flask(__name__, template_folder='docs')
 
 @app.route('/')
 def index():
     return render_template("index.html")
+
+@app.route('/feed.xml')
+def feed():
+    return send_file("docs/feed.xml")
 
 @app.route('/blog/')
 def blog():
