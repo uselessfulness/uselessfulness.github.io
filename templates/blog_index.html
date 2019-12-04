@@ -4,7 +4,8 @@
     <link href="/css/blog.css" rel="stylesheet">
 {% endblock %}
 {% block main %}
-    <h2 style="text-align: center">Blog</h2>
+    <h2 style="text-align: center; margin-bottom: 0px;">Blog</h2>
+    <h6 style="text-align: center; margin-top: 0px;"><a href="/feed">RSS</a></h6>
     <ol class="dotted">
     {% for post in posts %}
         <li>
