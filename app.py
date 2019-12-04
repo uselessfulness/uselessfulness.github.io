@@ -7,7 +7,7 @@ app = Flask(__name__, template_folder='docs')
 def index():
     return render_template("index.html")
 
-@app.route('/feed.xml')
+@app.route('/feed')
 def feed():
     return send_file("docs/feed.xml")
 
