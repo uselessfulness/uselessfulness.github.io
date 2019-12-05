@@ -3,7 +3,7 @@ from pathlib import Path
 from jinja2 import Template, Environment, FileSystemLoader
 from mistune import Markdown
 from lib import highlight
-from datetime import date
+import datetime
 
 def compile_templates(env, templates_dir, metadata):
     """
@@ -25,7 +25,11 @@ def compile_templates(env, templates_dir, metadata):
                 print(f'Compiling {name}...')
                 with open(output_dir / name, 'w+') as f:
                     if name == 'feed.xml':
-                        f.write(template.render(posts=reversed(metadata)))
+                        f.write(template.render(
+                            build_date=datetime.datetime.now().strftime(
+                                "%a, %d %b %Y %H:%M:%S +0000"),
+                            posts=reversed(metadata)
+                        ))
                     else:
                         f.write(template.render())
 
@@ -63,7 +67,7 @@ class BlogPost:
     # TODO With addition of RSS, refactor this class to be better.
     def __init__(self, filename):
         (self.date, self.file) = filename.split('_')
-        tdate = date(*(int(x) for x in self.date.split('-')))
+        tdate = datetime.date(*(int(x) for x in self.date.split('-')))
         self.rss_date = tdate.strftime("%a, %d %b %Y %H:%M:%S +0000")
         self.file += '.html'
         self.url = 'https://murr.dev/blog/' + self.file

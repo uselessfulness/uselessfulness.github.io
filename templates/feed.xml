@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>murr.dev</title>
     <link>https://murr.dev/</link>
     <description>where are we</description>
     <language>en</language>
+    <lastBuildDate>{{ build_date }}</lastBuildDate>
+    <atom:link href="https://murr.dev/feed.xml" rel="self" type="application/rss+xml"/>
     {% for post in posts %}
       <item>
         <title>{{ post.title }}</title>
         <link>{{ post.url }}</link>
-        <guid isPermaLink="false">{{ post.url }}</guid>
         <pubDate>{{ post.rss_date }}</pubDate>
+        <guid>{{ post.url }}</guid>
       </item>
     {% endfor %}
   </channel>
