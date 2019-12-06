@@ -6,13 +6,11 @@
 {% block main %}
     <h2 style="text-align: center; margin-bottom: 0px;">Blog</h2>
     <h6 style="text-align: center; margin-top: 0px;"><a href="/feed">RSS</a></h6>
-    <ol class="dotted">
+    <ol class="post-list">
     {% for post in posts %}
         <li>
-            <a href="{{ post.file }}">
-                <span class="left">{{ post.title}}</span>
-                <span class="right">{{ post.date }}</span>
-            </a>
+            <time>{{ post.date}}</time>
+            <a href="{{ post.file }}">{{ post.title }}</a>
         </li>
     {% endfor %}
     </ol>

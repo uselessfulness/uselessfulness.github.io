@@ -4,3 +4,7 @@
   max-width: 680px;
   text-align: center;
 }
+
+ul {
+  padding-left: 1em;
+}
