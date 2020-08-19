@@ -1,4 +1,0 @@
-- GitHub bots (develop your own, and do some research first)
-- CSS C++ Seminars (definitely basics, maybe memory management)
-- Comparison of programming languages in the modern era, and why all of them are really cool
-- Brief look at why Tufte's Visual Display is such a brilliant book
