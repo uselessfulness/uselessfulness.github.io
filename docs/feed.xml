@@ -5,8 +5,15 @@
     <link>https://murr.dev/</link>
     <description>where are we</description>
     <language>en</language>
-    <lastBuildDate>Wed, 10 Feb 2021 19:13:36 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 15 May 2021 11:21:24 +0000</lastBuildDate>
     <atom:link href="https://murr.dev/feed.xml" rel="self" type="application/rss+xml"/>
+    
+      <item>
+        <title>Simple C Obfuscation</title>
+        <link>https://murr.dev/blog/c-obfuscation.html</link>
+        <pubDate>Wed, 24 Feb 2021 00:00:00 +0000</pubDate>
+        <guid>https://murr.dev/blog/c-obfuscation.html</guid>
+      </item>
     
       <item>
         <title>Via Negativa</title>

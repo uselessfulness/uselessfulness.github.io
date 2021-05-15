@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>simple c obfuscation - murr.dev</title>
+        <link href="https://fonts.googleapis.com/css?family=Raleway:400,700|Crimson+Pro:300,300i,600|Roboto+Mono:400,700&display=swap" rel="stylesheet">
+        <link href="/css/styles.css" rel="stylesheet">
+        
+    <link href="/css/blog.css" rel="stylesheet">
+    <link href="/css/highlight.css" rel="stylesheet">
+
+    </head>
+    <body>
+        <header>
+            <nav>
+                <ul>
+                    <li><a class="title" href="/"><b>murr.dev</b></a></li>
+                    <li><a href="/blog/">blog</a></li>
+                    <li><a href="/about/">about</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            
+    <article class="blog-post">
+        
+<h1>Simple C Obfuscation</h1>
+<h2>Introduction</h2>
+<p>Recently I've taken an interest in the magnificent and marvelously mystifying
+wonders of the <a href="https://ioccc.org">International Obfuscated C Code Contest</a>.</p>
+<p>One entry, anderson 2000, caught my eye. The hint file mentions that hand
+deobfuscation is the best way to understand how the program, and the program
+seemed simple enough in function that I might be able to do it, so I did.</p>
+<p>This post will detail some techniques you can use to make C programs harder to
+understand, as learnt from anderson.c.</p>
+<p>To help demonstrate, here is a sample program for your viewing pleasure:</p>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;limits.h&gt;</span><span class="cp"></span>
+
+<span class="kt">unsigned</span> <span class="kt">char</span> <span class="nf">sum</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">a</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">b</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">UCHAR_MAX</span> <span class="o">-</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="n">b</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="mi">1</span><span class="p">;</span> <span class="p">}</span>
+    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">a</span> <span class="o">=</span> <span class="n">strtoul</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">b</span> <span class="o">=</span> <span class="n">strtoul</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Sum: %i</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">sum</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+<p>The program is simple enough. We take 2 unsigned chars as
+arguments and print their sum. If their sum would overflow, we print
+their sum as 0. The only reason these are chars rather than, say, ints, is
+only so it's easier to hit the max. Let's make it ugly.</p>
+<h2>Globals</h2>
+<p>Mutable globals are bad practice for a reason. It's trivial to make spaghetti code
+where variables change inside a function, changing the environment of the
+caller without any outside indication. Better yet, if these globals are used
+within other functions, a spaghetti spiderweb is quickly woven
+across your program.</p>
+<p>Since we're obfuscating our code, none of our variable names have
+any indication of how they should be used. So why should we only use them for
+one thing? When we're finished using <code>char a</code> in <code>void t()</code> as a temporary
+variable to swap characters, why not use it in <code>void p()</code> to index an
+array, or to hold a bitmask? Combine this with other variables' state being very
+important in later functions to ensure your reader cannot simply write off
+changes across functions.</p>
+<p>Anderson's entry also takes the approach of having every variable be not just
+global, but a char or pointer to/array of chars, which is merely incidental in
+our program. This means that any context the reader may have gleaned from the
+type is also removed.</p>
+<h3>Example 1</h3>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+
+<span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">c</span><span class="p">;</span> <span class="kt">char</span> <span class="o">**</span><span class="n">x</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// C still has 255 from decrementing in n() - we can use that here!</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">c</span> <span class="o">-</span> <span class="o">*</span><span class="n">a</span> <span class="o">&lt;</span> <span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="o">++</span><span class="n">c</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="o">*</span><span class="n">a</span> <span class="o">+</span> <span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">g</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Sum: %i</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">c</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">p</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// Split into own function to make logic less obvious in main()</span>
+    <span class="n">a</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">strtoul</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">c</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">n</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">c</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span> <span class="n">p</span><span class="p">();</span> <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">b</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">m</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">b</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="mi">1</span><span class="p">;</span> <span class="p">}</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">m</span><span class="p">;</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+
+    <span class="n">n</span><span class="p">();</span> <span class="n">f</span><span class="p">();</span> <span class="n">g</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+<p>This is better, but still readable. While it is difficult to figure out
+the function of the entire program from any specific function, its still not
+hard to grok the functions and how they interact with each other. <code>f()</code> is
+especially readable - its function is pretty obvious, and it tells a reader a lot
+about how the variables are used.</p>
+<h2>Short-Circuit Evaluation</h2>
+<p>C evaluates logical operators from left to right. For some operators, it can
+discern
+what the result will be without having to evaluate all the expressions that
+operator's output depends on. For example, C knows that <code>0 &amp;&amp; x()</code> will always be
+0, no matter what the value of x is. C will 'short-circuit' the evaluation of
+the operator, and leave the right hand expression alone, which has important
+implications if that function has side-effects.</p>
+<p>This allows us to save space and
+decrease readability by replacing if statements with <code>&amp;&amp;</code> and <code>||</code>. Not
+only this, but when combined with other operators to make more complex
+statements, you can add a few extra seconds of latency to a reader's
+understanding of the code.</p>
+<h3>Example 2</h3>
+<div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">c</span> <span class="o">+=</span> <span class="n">c</span> <span class="o">-</span> <span class="o">*</span><span class="n">a</span> <span class="o">&lt;</span> <span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">c</span> <span class="o">=</span> <span class="o">*</span><span class="n">a</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">b</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">m</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="n">b</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">m</span><span class="p">),</span> <span class="p">(</span><span class="n">c</span> <span class="o">=</span> <span class="mi">2</span><span class="p">),</span> <span class="n">n</span><span class="p">(),</span> <span class="n">f</span><span class="p">(),</span> <span class="n">g</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+<p>One downside to using this approach is that these operators cannot involve
+functions that return void, though as we'll see this can be worked
+around and even used to our advantage.</p>
+<h2>Implicit Return</h2>
+<p>In C, you can write a function returning a value without writing any return
+expressions in its implementation. Using the return value is
+undefined behaviour, but for our purposes we don't particularly care - we
+just want to tell the compiler our function can be used in expressions where it
+expects a return value. We don't want to use this value purposefully (it's
+undefined behaviour to do so) but it fits nicely into the short-circuit
+evaluation discussed above.</p>
+<p>Additionally, although warnings will be given in C99+, if we give no return
+type then it will infer it to return int, so we give our reader even less
+information. You could also give any other return type, for the purposes of
+misleading your reader.</p>
+<div class="highlight"><pre><span></span><span class="n">f</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">c</span> <span class="o">+=</span> <span class="n">c</span> <span class="o">-</span> <span class="o">*</span><span class="n">a</span> <span class="o">&lt;</span> <span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">c</span> <span class="o">=</span> <span class="o">*</span><span class="n">a</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="n">g</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Sum: %i</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">c</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">p</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">a</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">strtoul</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">c</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">n</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">c</span><span class="o">--</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">p</span><span class="p">(),</span> <span class="n">n</span><span class="p">());</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">b</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">m</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="n">b</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">m</span><span class="p">),</span> <span class="p">(</span><span class="n">c</span> <span class="o">=</span> <span class="mi">2</span><span class="p">),</span> <span class="n">n</span><span class="p">(),</span> <span class="n">f</span><span class="p">(),</span> <span class="n">g</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+<p>Our program is starting to look evil now. One painful point is the need to
+seperate functions so much in our logical statements, as our reader gets a clear
+view of the order of execution. We will now strive to bring them together in a
+terrible way.</p>
+<h2>K&amp;R-Style Initialiser Lists</h2>
+<p>Function declarations in C suffer from 2 problems: implicit return types, as
+explored above, and old-school initialiser lists. The meaning of initialiser
+lists has evolved with C++, but in C they allow us to eject the input of the
+function, and initialise them after the function declaration itself. However,
+if one wishes to be evil, we can simply initialise nothing, and without
+explicitly declaring the function as taking void, give both the reader and the
+compiler no information whatsover about how the function should be used.</p>
+<p>Since the compiler does not know if the function has variables it would like to
+assign from input, we can give the function input at the call site. Where the
+function is called, the expression within the brackets is evaluated before the
+function, leading to a fun reading effect where reading the expression from
+left to right is very misleading - see our main function below.</p>
+<h3>Example 4</h3>
+<div class="highlight"><pre><span></span><span class="n">f</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">c</span> <span class="o">+=</span> <span class="n">c</span> <span class="o">-</span> <span class="o">*</span><span class="n">a</span> <span class="o">&lt;</span> <span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">c</span> <span class="o">=</span> <span class="o">*</span><span class="n">a</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="n">g</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Sum: %i</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">c</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">p</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">a</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">strtoul</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">c</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">n</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">c</span><span class="o">--</span> <span class="o">&amp;&amp;</span> <span class="n">n</span><span class="p">(</span><span class="n">p</span><span class="p">());</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">b</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">m</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="n">b</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="o">&amp;&amp;</span> <span class="n">f</span><span class="p">(</span><span class="n">n</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">m</span><span class="p">),</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">2</span><span class="p">),</span> <span class="n">g</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+<h2>Wrong-side Indexing</h2>
+<p>In C, the expression <code>a[b]</code>, where <code>a</code> is an array or pointer type and <code>b</code> is an
+index, is essentially syntactic sugar for <code>*(a+b)</code>. This is true to the extent
+that <code>a[b] == b[a]</code>, which reads completely nonsensensically when considered
+semantically (you can't index an index with an array).</p>
+<h3>Example 5</h3>
+<div class="highlight"><pre><span></span><span class="n">f</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">c</span> <span class="o">+=</span> <span class="n">c</span> <span class="o">-</span> <span class="o">*</span><span class="n">a</span> <span class="o">&lt;</span> <span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="o">++</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)[</span><span class="n">a</span><span class="p">]</span> <span class="o">||</span> <span class="p">(</span><span class="n">c</span> <span class="o">=</span> <span class="o">*</span><span class="n">a</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="n">p</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">c</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">strtoul</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">c</span><span class="o">+</span><span class="n">x</span><span class="p">),</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+<h3>Result</h3>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+
+<span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">c</span><span class="p">;</span> <span class="kt">char</span> <span class="o">**</span><span class="n">x</span><span class="p">;</span>
+
+<span class="n">f</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">c</span> <span class="o">+=</span> <span class="n">c</span> <span class="o">-</span> <span class="o">*</span><span class="n">a</span> <span class="o">&lt;</span> <span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="o">++</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)[</span><span class="n">a</span><span class="p">]</span> <span class="o">||</span> <span class="p">(</span><span class="n">c</span> <span class="o">=</span> <span class="o">*</span><span class="n">a</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="n">g</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Sum: %i</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">c</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">p</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">c</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">strtoul</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">c</span><span class="o">+</span><span class="n">x</span><span class="p">),</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">n</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">c</span><span class="o">--</span> <span class="o">&amp;&amp;</span> <span class="n">n</span><span class="p">(</span><span class="n">p</span><span class="p">());</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">b</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">m</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="n">b</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="o">&amp;&amp;</span> <span class="n">f</span><span class="p">(</span><span class="n">n</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">m</span><span class="p">),</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">2</span><span class="p">),</span> <span class="n">g</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+<h2>Interlude: ASCII Art</h2>
+<p>Let's take this time to make our program look pretty (pretty unreadable, heh).
+I don't know how the pros tend to do this, but I like to split my
+program into roughly equal blocks, which you can generally increase and
+decrease in length by adding spaces and semicolons where appropriate.</p>
+<p>Here I've made the program into a cross, because it's easy and "cleverly"
+constrasts the program's function, which is to sum.</p>
+<h3>Final Program</h3>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+
+
+<span class="kt">unsigned</span>                   <span class="kt">char</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+  <span class="p">,</span><span class="n">c</span><span class="p">;</span> <span class="kt">char</span>               <span class="o">**</span><span class="n">x</span><span class="p">;</span><span class="n">f</span><span class="p">(){</span><span class="n">c</span>
+    <span class="o">+=</span><span class="n">c</span><span class="o">-*</span><span class="n">a</span><span class="o">&lt;</span><span class="p">(</span>           <span class="o">*</span><span class="n">x</span><span class="o">++</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span>
+      <span class="p">)[</span><span class="n">a</span><span class="p">]</span><span class="o">||</span><span class="p">(</span><span class="n">c</span>       <span class="o">=*</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="o">+*</span><span class="p">(</span><span class="n">a</span>
+        <span class="o">+</span><span class="mi">1</span><span class="p">));}</span><span class="n">g</span><span class="p">(</span>   <span class="p">){</span><span class="n">printf</span><span class="p">(</span>
+         <span class="s">&quot;Sum: %i</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">c</span><span class="p">);}</span><span class="n">p</span>
+         <span class="p">(){</span><span class="n">c</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">strtoul</span>
+        <span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">c</span><span class="o">+</span><span class="n">x</span>   <span class="p">),</span><span class="nb">NULL</span><span class="p">,</span><span class="mi">10</span>
+      <span class="p">);}</span><span class="n">n</span><span class="p">(){</span><span class="n">c</span>       <span class="o">--&amp;&amp;</span><span class="n">n</span><span class="p">(</span><span class="n">p</span><span class="p">()</span>
+    <span class="p">);};</span> <span class="kt">int</span>           <span class="nf">main</span><span class="p">(</span> <span class="kt">int</span>
+  <span class="n">b</span><span class="p">,</span><span class="kt">char</span><span class="o">*</span><span class="n">m</span>               <span class="p">[]){</span><span class="n">b</span><span class="o">&gt;</span><span class="mi">2</span><span class="o">&amp;&amp;</span>
+<span class="n">f</span><span class="p">(</span><span class="n">n</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">m</span><span class="p">),</span>                  <span class="n">c</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span><span class="n">g</span><span class="p">();}</span>
+</pre></div>
+<h2>How could it be worse?</h2>
+<p>The anderson.c file follows some good style: each function in the code performs
+some specific task, and the hierarchy of function calls is understandable.
+There is no reason that this should necessarily be the case, however &gt;:)</p>
+<p>We also do not discuss macro obfuscation, which is found in a large set of
+programs that bless the IOCCC. It should be clear that a large number of such
+techniques are useless once the preprocessor is applied to the source, but
+clever combinations of macros leads to some very non-intuitive behaviour.</p>
+<p>Finally, there is no reason to use something as neat as a set of variables to
+hold program state, especially if we are using chars. A large array of values
+without clear use, differentiated by offsets and lengths that often overlap
+each other and are modified within other parts of the program, is particularly
+devious.</p>
+<p>I hope that this exploration into C's interesting perspective on syntax and
+semantics has been enjoyable and, somehow, useful for you. Alongside anderson,
+some key standout entries that I have enjoyed a lot come from endoh and yang,
+well worth a search on the <a href="https://www.ioccc.org/years.html">leeterboard</a>.</p>
+
+
+    </article>
+
+        </main>
+    </body>
+</html>
