@@ -58,3 +58,11 @@ ol.post-list {
   padding: 6px 10px;
   white-space: pre-wrap;
 }
+
+.blog-post img {
+  width: 90%;
+  height: auto;
+  /* margin: auto; is being a bugger on local */
+  margin-left: 5%;
+  margin-right: 5%;
+}
