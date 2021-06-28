@@ -48,6 +48,14 @@ ol.post-list {
 
 .blog-post h4 {
   font-size: 1em;
+  margin-top: 0.9em;
+  margin-bottom: 0.9em;
+}
+
+.blog-post h5 {
+  font-size: 0.9em;
+  margin-top: 0.9em;
+  margin-bottom: 0.9em;
 }
 
 .blog-post code, .blog-post .highlight {
