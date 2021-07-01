@@ -1,17 +1,17 @@
 body {
   margin-left: 1em;
   margin-right: 1em;
-  font-family: 'Crimson Pro', serif;
+  font-family: serif;
   font-size: 1.2rem;
   margin-bottom: 5%;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Raleway', sans-serif;
+  font-family: sans-serif;
 }
 
 code {
-  font-family: 'Roboto Mono', monospace;
+  font-family: monospace;
 }
 
 a {
@@ -38,7 +38,7 @@ nav ul {
   justify-content: center;
   align-items: center;
   list-style: none;
-  font-family: 'Crimson Pro', serif;
+  font-family: serif;
   font-size: 1.25rem;
 }
 
